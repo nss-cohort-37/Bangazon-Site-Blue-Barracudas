@@ -36,6 +36,9 @@ namespace Bangazon.Models
 
         public string City {get; set;}
 
+        [Display(Name = "Local Delivery")]
+
+        public bool localDelivery { get; set; }
         public string ImagePath {get; set;}
 
         public bool Active { get; set; }
