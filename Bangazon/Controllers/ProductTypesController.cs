@@ -25,7 +25,7 @@ namespace Bangazon.Controllers
        }
 
 
-       // GET: ProductTypes
+       // GET Product Types with their Products!
        public ActionResult Index()
         {
             var types = Types();
