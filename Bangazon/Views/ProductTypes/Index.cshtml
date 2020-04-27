@@ -30,7 +30,7 @@
                     @foreach (var product in item.Products)
                     {
                     <li>
-                        <a asp-controller="Products" asp-action="Details">@Html.DisplayFor(modelItem => product.Title)</a>
+                        <a asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId">@Html.DisplayFor(modelItem => product.Title)</a>
                     </li>
                     }
                 </ul>
