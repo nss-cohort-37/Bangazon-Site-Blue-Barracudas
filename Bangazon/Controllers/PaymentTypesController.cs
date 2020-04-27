@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bangazon.Data;
 using Bangazon.Models;
-using Bangazon.Models.PaymentTypeViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
