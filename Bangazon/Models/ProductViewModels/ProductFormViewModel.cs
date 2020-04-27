@@ -48,6 +48,8 @@ namespace Bangazon.Models.ProductViewModels
 
         public bool Active { get; set; }
 
+        public bool localDelivery { get; set; }
+
         [Required]
         public ApplicationUser User { get; set; }
 

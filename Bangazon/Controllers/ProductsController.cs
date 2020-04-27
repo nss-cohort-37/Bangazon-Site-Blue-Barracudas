@@ -43,7 +43,18 @@ namespace Bangazon.Controllers
         // GET: Products/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var item = await _context.Product.FirstOrDefaultAsync(p => p.ProductId == id);
+
+            var viewModel = new ProductDetailViewModel();
+
+            viewModel.Id = id; 
+            viewModel.Title = item.Title;
+            viewModel.Price = item.Price;
+            viewModel.Description = item.Description;
+            viewModel.Quantity = item.Quantity; 
+            
+
+            return View(viewModel);
         }
 
         // GET: Products/Create
@@ -80,7 +91,8 @@ namespace Bangazon.Controllers
                     UserId = user.Id, 
                     City = productViewItem.City, 
                     Active = productViewItem.Active, 
-                    ProductTypeId = productViewItem.ProductTypeId
+                    ProductTypeId = productViewItem.ProductTypeId, 
+                    localDelivery = productViewItem.localDelivery
 
                     
                 };
@@ -133,11 +145,12 @@ namespace Bangazon.Controllers
         {
             try
             {
-                _context.Product.Remove(product); 
-
+                product.ProductId = id; 
+                _context.Product.Remove(product);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }

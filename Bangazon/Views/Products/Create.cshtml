@@ -37,6 +37,13 @@
                 <input asp-for="Quantity" class="form-control" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="localDelivery">Is local delivery available?</label>
+                @*<input type="checkbox"  @(checked ? Convert.ToBoolean(Model.localDelivery) == true : false) />*@
+
+                <input type="checkbox"  value="true" asp-for="localDelivery" />
+             </div>
+
 
             <div class="form-group">
                 <label asp-for="City" class="control-label"></label>
