@@ -26,10 +26,10 @@ namespace Bangazon.Controllers
 
 
        // GET: ProductTypes
-       public async Task<ActionResult> Index()
+       public ActionResult Index()
         {
-            var productTypes = await Types();
-            return View(productTypes);
+            var types = Types();
+            return View(types);
         }
 
         // GET: ProductTypes/Details/5
@@ -107,11 +107,11 @@ namespace Bangazon.Controllers
             }
         }
 
-        public async Task<IActionResult> Types()
+        private ProductTypesViewModel Types()
         {
             var model = new ProductTypesViewModel();
 
-            model.Types = await _context
+            model.Types = _context
                 .ProductType
                 .Select(pt => new TypeWithProducts()
                 {
@@ -119,9 +119,9 @@ namespace Bangazon.Controllers
                     TypeName = pt.Label,
                     ProductCount = pt.Products.Count(),
                     Products = pt.Products.OrderByDescending(p => p.DateCreated).Take(3).ToList()
-                }).ToListAsync();
+                }).ToList();
 
-            return View(model);
+            return model;
         }
     }
 }
