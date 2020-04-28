@@ -33,7 +33,9 @@ namespace Bangazon.Controllers
             var shoppingCartItems = await _context.OrderProduct
                 .Include(op => op.Order)
                 .Where(op => op.Order.UserId == user.Id && op.Order.PaymentTypeId == null)
-                .Include(op => op.Order.OrderProducts ).ToListAsync(); 
+                .Include(op => op.Product).ToListAsync();
+
+                //.Include(op => op.Order.OrderProducts ).ToListAsync(); 
 
             
             return View(shoppingCartItems);
@@ -137,19 +139,23 @@ namespace Bangazon.Controllers
         }
 
         // GET: Orders/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var item = await _context.OrderProduct.Include(op => op.Product).FirstOrDefaultAsync(op => op.OrderProductId == id);
+
+            return View(item);
         }
 
         // POST: Orders/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async  Task<ActionResult> Delete(int id, OrderProduct orderProduct)
         {
             try
             {
-                // TODO: Add delete logic here
+                orderProduct.OrderProductId = id;
+                _context.OrderProduct.Remove(orderProduct);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
