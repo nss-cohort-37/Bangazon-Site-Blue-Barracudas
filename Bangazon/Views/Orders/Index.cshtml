@@ -6,7 +6,6 @@
 
 <h1>Shopping Cart</h1>
 
-
 <table class="table">
     <thead>
         <tr>
@@ -16,39 +15,41 @@
             <th>
                 @Html.DisplayNameFor(model => model.Order.DateCreated)
             </th>
- 
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-              
-        <tr>
-            <td>
-                <ul>
+        @foreach (var item in Model)
+        {
 
-          
-                    <li>
-                        <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">
-                            @Html.DisplayFor(modelItem => item.Product.Title)
-                        </a>
+            <tr>
+                <td>
+                    <ul>
+
+
+                        <li>
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">
+                                @Html.DisplayFor(modelItem => item.Product.Title)
+                            </a>
                             @Html.DisplayFor(modelItem => item.Product.Price)
-</li>   
+                        </li>
 
-               
+                    </ul>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Order.DateCreated)
+                </td>
 
-                </ul>
-              
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Order.DateCreated)
-            </td>
-        
-            <td>
-              
-                @Html.ActionLink("Delete", "Delete", new { id = item.OrderProductId })
-            </td>
-        </tr>
-}
+                <td>
+
+                    @Html.ActionLink("Delete", "Delete", new { id = item.OrderProductId })
+                </td>
+            </tr>
+            <a type="button" asp-controller="Orders" asp-action="Edit" asp-route-id="@item.OrderId"  > Complete Order </a>
+            <a type="button" asp-controller="Orders" asp-action="CancelOrder" asp-route-id="@item.OrderId" > Cancel Order </a>
+        }
     </tbody>
 </table>
+
+

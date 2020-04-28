@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bangazon.Data;
 using Bangazon.Models;
+using Bangazon.Models.OrderViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bangazon.Controllers
@@ -37,6 +39,7 @@ namespace Bangazon.Controllers
 
                 //.Include(op => op.Order.OrderProducts ).ToListAsync(); 
 
+            // maybe a make a view model 
             
             return View(shoppingCartItems);
         }
@@ -116,23 +119,44 @@ namespace Bangazon.Controllers
         }
 
         // GET: Orders/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var paymentOptions = await _context.PaymentType
+              .Select(pt => new SelectListItem() { Text = pt.Description, Value = pt.PaymentTypeId.ToString() })
+              .ToListAsync();
+
+            var viewModel = new OrderPaymentFormViewModel();
+
+            viewModel.PaymentTypeOptions = paymentOptions;
+            viewModel.OrderId = id; 
+
+            return View(viewModel);
         }
 
         // POST: Orders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, OrderPaymentFormViewModel orderPayment)
         {
             try
             {
-                // TODO: Add update logic here
+                var user = await GetCurrentUserAsync();
+
+                var order = new Order()
+                {
+                    OrderId = id,
+                    PaymentTypeId = orderPayment.PaymentTypeId,
+                    DateCompleted = DateTime.Now, 
+                    UserId = user.Id
+                };
+
+                _context.Order.Update(order);
+                await _context.SaveChangesAsync(); 
+
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
@@ -164,6 +188,41 @@ namespace Bangazon.Controllers
                 return View();
             }
         }
+
+
+        // delete for the entire order and all it's corresponding products 
+        
+        
+        public async Task<ActionResult> CancelOrder(int id)
+        {
+            var item = await _context.Order.FirstOrDefaultAsync(o => o.OrderId == id);
+
+
+
+            return View(item);
+        }
+
+        // POST: Orders/CancelOrder/5
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CancelOrder(int id, OrderProduct orderProduct, Order order)
+        {
+            try
+            {
+                var orderToDelete = await _context.Order.FirstOrDefaultAsync(o => o.OrderId == id);
+
+                _context.Order.Remove(orderToDelete);
+                await _context.SaveChangesAsync(); 
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
