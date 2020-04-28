@@ -8,9 +8,11 @@ using Bangazon.Models;
 using Bangazon.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bangazon.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,24 +25,20 @@ namespace Bangazon.Controllers
         }
         public async Task<ActionResult> Index(string searchBar)
         {
+
+
             if (searchBar != null)
             {
                 var products = await _context.Product
-                      .Where(p => p.Title.Contains(searchBar) && p.Active == true || p.City.Contains(searchBar) && p.Active == true)
+                      .Where(p => p.Title.Contains(searchBar) && p.Active == true || p.City.Contains(searchBar) && p.Active == true || p.Description.Contains(searchBar) && p.Active == true)
                       .Include(p => p.ProductType)
                       //.Include(p => p.ImagePath)
                        .ToListAsync();
                 return View(products);
             }
-            else
-            {
-                var products = await _context.Product
-                    .Where(p => p.Active == true)
-                    .Include(p => p.ProductType)
-                     //.Include(p => p.ImagePath)
-                   .ToListAsync();
-                return View(products);
-            }
+        
+                return View();
+           
         }
 
 
