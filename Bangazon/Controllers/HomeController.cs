@@ -5,20 +5,44 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bangazon.Models;
+using Bangazon.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bangazon.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            return View();
+            _context = context;
+            _userManager = userManager;
+        }
+        public async Task<ActionResult> Index(string searchBar)
+        {
+
+
+            if (searchBar != null)
+            {
+                var products = await _context.Product
+                      .Where(p => p.Title.Contains(searchBar) && p.Active == true || p.City.Contains(searchBar) && p.Active == true || p.Description.Contains(searchBar) && p.Active == true)
+                      .Include(p => p.ProductType)
+                      //.Include(p => p.ImagePath)
+                       .ToListAsync();
+                return View(products);
+            }
+        
+                return View();
+           
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
