@@ -31,17 +31,33 @@ namespace Bangazon.Controllers
         public async  Task<ActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
-
-            var shoppingCartItems = await _context.OrderProduct
-                .Include(op => op.Order)
-                .Where(op => op.Order.UserId == user.Id && op.Order.PaymentTypeId == null)
-                .Include(op => op.Product).ToListAsync();
-
-                //.Include(op => op.Order.OrderProducts ).ToListAsync(); 
-
-            // maybe a make a view model 
             
-            return View(shoppingCartItems);
+            var orderProducts = await _context.OrderProduct
+                                    .Include(op => op.Product)
+                                    .Where(op => op.Order.UserId == user.Id && op.Order.PaymentTypeId == null).ToListAsync();
+            var orderId = await _context.Order.FirstOrDefaultAsync(o => o.UserId == user.Id && o.PaymentTypeId == null);
+
+            var viewModel = new ShoppingCartViewModel();
+            if (orderId != null && orderProducts != null)
+            {
+                viewModel = new ShoppingCartViewModel()
+                {
+                    OrderId = orderId.OrderId,
+                    Products = orderProducts
+                };
+
+
+            }
+            else
+            {
+                viewModel = new ShoppingCartViewModel()
+                {
+                    OrderId = 0,
+                    Products = null
+                };
+            }
+            return View(viewModel);
+
         }
 
         // GET: Orders/Details/5
