@@ -1,58 +1,67 @@
-﻿@model IEnumerable<Bangazon.Models.OrderProduct>
-
-
+﻿@model Bangazon.Models.OrderViewModels.ShoppingCartViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-
 <h1>Shopping Cart</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Order.DateCreated)
-            </th>
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-
+@if (Model.OrderId > 0)
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    <ul>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order.DateCreated)
+                </th>
 
-
-                        <li>
-                            <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">
-                                @Html.DisplayFor(modelItem => item.Product.Title)
-                            </a>
-                            @Html.DisplayFor(modelItem => item.Product.Price)
-                        </li>
-
-                    </ul>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Order.DateCreated)
-                </td>
-
-                <td>
-
-                    @Html.ActionLink("Delete", "Delete", new { id = item.OrderProductId })
-                </td>
+                <th></th>
             </tr>
-            <a type="button" asp-controller="Orders" asp-action="Edit" asp-route-id="@item.OrderId"> Complete Order </a>
-            <a type="button" asp-controller="Orders" asp-action="CancelOrder" asp-route-id="@item.OrderId"> Cancel Order </a>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
 
+
+            @foreach (var item in Model.Products)
+            {
+
+                <tr>
+                    <td>
+                        <ul>
+
+
+                            <li>
+                                <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">
+                                    @Html.DisplayFor(modelItem => item.Product.Title)
+                                </a>
+                                @Html.DisplayFor(modelItem => item.Product.Price)
+                            </li>
+
+                        </ul>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Order.DateCreated)
+                    </td>
+
+                    <td>
+
+                        @Html.ActionLink("Delete", "Delete", new { id = item.OrderProductId })
+                    </td>
+                </tr>
+            }
+            @Html.ActionLink("Complete Order", "Edit", new { id = Model.OrderId })
+            @Html.ActionLink("Cancel Order", "CancelOrder", new { id = Model.OrderId })
+
+
+        </tbody>
+    </table>
+}
+else
+{
+    <tbody>
+        <h6>Your shopping cart is empty.</h6>
+    </tbody>
+}
 

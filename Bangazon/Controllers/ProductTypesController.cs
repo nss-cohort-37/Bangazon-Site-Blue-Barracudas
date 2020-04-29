@@ -33,10 +33,18 @@ namespace Bangazon.Controllers
 
         }
 
-        // GET: ProductTypes/Details/5
-        public ActionResult Details(int id)
+        //GET: ProductTypes/Details/5
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var productCategory = await _context.ProductType.FirstOrDefaultAsync(pt => pt.ProductTypeId == id);
+            var productsList = await _context.Product.Where(p => p.ProductTypeId == id).ToListAsync();
+
+            var viewModel = new AllCategoryProductsViewModel()
+            {
+                Label = productCategory.Label,
+                Products = productsList
+            };
+            return View(viewModel);
         }
 
         // GET: ProductTypes/Create

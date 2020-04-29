@@ -28,20 +28,36 @@ namespace Bangazon.Controllers
             _userManager = userManager;
         }
 
-        public async  Task<ActionResult> Index()
+        public async Task<ActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
 
-            var shoppingCartItems = await _context.OrderProduct
-                .Include(op => op.Order)
-                .Where(op => op.Order.UserId == user.Id && op.Order.PaymentTypeId == null)
-                .Include(op => op.Product).ToListAsync();
+            var orderProducts = await _context.OrderProduct
+                                    .Include(op => op.Product)
+                                    .Where(op => op.Order.UserId == user.Id && op.Order.PaymentTypeId == null).ToListAsync();
+            var orderId = await _context.Order.FirstOrDefaultAsync(o => o.UserId == user.Id && o.PaymentTypeId == null);
 
-            //.Include(op => op.Order.OrderProducts ).ToListAsync(); 
-            // maybe a make a view model 
+            var viewModel = new ShoppingCartViewModel();
+            if (orderId != null && orderProducts != null)
+            {
+                viewModel = new ShoppingCartViewModel()
+                {
+                    OrderId = orderId.OrderId,
+                    Products = orderProducts
+                };
 
 
-            return View(shoppingCartItems);
+            }
+            else
+            {
+                viewModel = new ShoppingCartViewModel()
+                {
+                    OrderId = 0,
+                    Products = null
+                };
+            }
+            return View(viewModel);
+
         }
 
         // GET: Orders/Details/5
@@ -67,16 +83,16 @@ namespace Bangazon.Controllers
                 var user = await GetCurrentUserAsync();
 
 
-                var shoppingCartExists = _context.Order.FirstOrDefault(o => o.UserId == user.Id && o.PaymentTypeId == null); 
+                var shoppingCartExists = _context.Order.FirstOrDefault(o => o.UserId == user.Id && o.PaymentTypeId == null);
 
-                if(shoppingCartExists == null)
+                if (shoppingCartExists == null)
                 {
                     //make a cart which is an order with payment type null etc 
 
                     var shoppingCart = new Order
                     {
-                        UserId = user.Id, 
-                        PaymentTypeId = null 
+                        UserId = user.Id,
+                        PaymentTypeId = null
                     };
 
                     _context.Order.Add(shoppingCart);
@@ -96,16 +112,16 @@ namespace Bangazon.Controllers
                 {
 
 
-                    var Order =  _context.Order.FirstOrDefault(o => o.UserId == user.Id && o.PaymentTypeId == null); 
+                    var Order = _context.Order.FirstOrDefault(o => o.UserId == user.Id && o.PaymentTypeId == null);
 
                     var AddingOrderProduct = new OrderProduct
                     {
                         OrderId = Order.OrderId,
                         ProductId = id
-                    }; 
+                    };
 
                     _context.OrderProduct.Add(AddingOrderProduct);
-                    await _context.SaveChangesAsync(); 
+                    await _context.SaveChangesAsync();
 
                 }
 
@@ -128,7 +144,7 @@ namespace Bangazon.Controllers
             var viewModel = new OrderPaymentFormViewModel();
 
             viewModel.PaymentTypeOptions = paymentOptions;
-            viewModel.OrderId = id; 
+            viewModel.OrderId = id;
 
             return View(viewModel);
         }
@@ -146,12 +162,12 @@ namespace Bangazon.Controllers
                 {
                     OrderId = id,
                     PaymentTypeId = orderPayment.PaymentTypeId,
-                    DateCompleted = DateTime.Now, 
+                    DateCompleted = DateTime.Now,
                     UserId = user.Id
                 };
 
                 _context.Order.Update(order);
-                await _context.SaveChangesAsync(); 
+                await _context.SaveChangesAsync();
 
 
                 return RedirectToAction(nameof(Index));
@@ -173,7 +189,7 @@ namespace Bangazon.Controllers
         // POST: Orders/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async  Task<ActionResult> Delete(int id, OrderProduct orderProduct)
+        public async Task<ActionResult> Delete(int id, OrderProduct orderProduct)
         {
             try
             {
@@ -191,8 +207,8 @@ namespace Bangazon.Controllers
 
 
         // delete for the entire order and all it's corresponding products 
-        
-        
+
+
         public async Task<ActionResult> CancelOrder(int id)
         {
             var item = await _context.Order.FirstOrDefaultAsync(o => o.OrderId == id);
@@ -213,7 +229,7 @@ namespace Bangazon.Controllers
                 var orderToDelete = await _context.Order.FirstOrDefaultAsync(o => o.OrderId == id);
 
                 _context.Order.Remove(orderToDelete);
-                await _context.SaveChangesAsync(); 
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
