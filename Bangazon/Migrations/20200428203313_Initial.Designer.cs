@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bangazon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200427163759_Upate-Database")]
-    partial class UpateDatabase
+    [Migration("20200428203313_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,7 +102,7 @@ namespace Bangazon.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e086d6ae-d4b7-419a-aa7f-4d2bef6a1f00",
+                            ConcurrencyStamp = "b1f4f009-a260-4abe-959a-0eb259690857",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admina",
@@ -110,7 +110,7 @@ namespace Bangazon.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMElw2dGmN2XaQbqNltjNmYKsvbn9Flu1Df8zFgzbPInXoKLtvYQYo5Oep2sfEeFhw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIIeTvvRF7Z3UZOaewTr9jMUhTPZhNac/bjyu/2roBeg7u723F9nfuowCh+NT0rgiw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             StreetAddress = "123 Infinity Way",

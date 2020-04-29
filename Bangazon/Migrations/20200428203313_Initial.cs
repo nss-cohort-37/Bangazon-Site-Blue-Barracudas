@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bangazon.Migrations
 {
-    public partial class Intial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -203,6 +203,7 @@ namespace Bangazon.Migrations
                     Quantity = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
                     City = table.Column<string>(nullable: true),
+                    localDelivery = table.Column<bool>(nullable: false),
                     ImagePath = table.Column<string>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     ProductTypeId = table.Column<int>(nullable: false)
@@ -269,7 +270,7 @@ namespace Bangazon.Migrations
                         column: x => x.OrderId,
                         principalTable: "Order",
                         principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderProduct_Product_ProductId",
                         column: x => x.ProductId,
@@ -281,7 +282,7 @@ namespace Bangazon.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StreetAddress", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "90c396ca-6581-4870-a24b-71826f7aa11b", "admin@admin.com", true, "Admina", "Straytor", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEKTPnZxwwGDffryB8AdBuqt0Eoy+MUDlmvgEKttD2qbJANSj/Gd+6ZpEjVX30SzKtg==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", "123 Infinity Way", false, "admin@admin.com" });
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "b1f4f009-a260-4abe-959a-0eb259690857", "admin@admin.com", true, "Admina", "Straytor", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEIIeTvvRF7Z3UZOaewTr9jMUhTPZhNac/bjyu/2roBeg7u723F9nfuowCh+NT0rgiw==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", "123 Infinity Way", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "ProductType",
@@ -316,14 +317,14 @@ namespace Bangazon.Migrations
 
             migrationBuilder.InsertData(
                 table: "Product",
-                columns: new[] { "ProductId", "Active", "City", "Description", "ImagePath", "Price", "ProductTypeId", "Quantity", "Title", "UserId" },
+                columns: new[] { "ProductId", "Active", "City", "Description", "ImagePath", "Price", "ProductTypeId", "Quantity", "Title", "UserId", "localDelivery" },
                 values: new object[,]
                 {
-                    { 1, true, null, "It flies high", null, 2.9900000000000002, 1, 100, "Kite", "00000000-ffff-ffff-ffff-ffffffffffff" },
-                    { 2, true, null, "It rolls fast", null, 29.989999999999998, 2, 5, "Wheelbarrow", "00000000-ffff-ffff-ffff-ffffffffffff" },
-                    { 3, true, null, "It cuts things", null, 31.489999999999998, 3, 18, "Saw", "00000000-ffff-ffff-ffff-ffffffffffff" },
-                    { 4, true, null, "It puts holes in things", null, 24.890000000000001, 3, 12, "Electric Drill", "00000000-ffff-ffff-ffff-ffffffffffff" },
-                    { 5, true, null, "It puts things together", null, 22.690000000000001, 3, 32, "Hammer", "00000000-ffff-ffff-ffff-ffffffffffff" }
+                    { 1, true, null, "It flies high", null, 2.9900000000000002, 1, 100, "Kite", "00000000-ffff-ffff-ffff-ffffffffffff", false },
+                    { 2, true, null, "It rolls fast", null, 29.989999999999998, 2, 5, "Wheelbarrow", "00000000-ffff-ffff-ffff-ffffffffffff", false },
+                    { 3, true, null, "It cuts things", null, 31.489999999999998, 3, 18, "Saw", "00000000-ffff-ffff-ffff-ffffffffffff", false },
+                    { 4, true, null, "It puts holes in things", null, 24.890000000000001, 3, 12, "Electric Drill", "00000000-ffff-ffff-ffff-ffffffffffff", false },
+                    { 5, true, null, "It puts things together", null, 22.690000000000001, 3, 32, "Hammer", "00000000-ffff-ffff-ffff-ffffffffffff", false }
                 });
 
             migrationBuilder.InsertData(
