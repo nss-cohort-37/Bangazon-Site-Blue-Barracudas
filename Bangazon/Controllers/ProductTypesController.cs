@@ -26,10 +26,11 @@ namespace Bangazon.Controllers
 
 
        // GET Product Types with their Products!
-       public ActionResult Index()
+       public async Task<ActionResult> Index()
         {
             var types = Types();
             return View(types);
+
         }
 
         //GET: ProductTypes/Details/5

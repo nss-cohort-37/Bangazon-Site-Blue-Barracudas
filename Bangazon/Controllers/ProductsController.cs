@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Bangazon.Data;
@@ -28,14 +29,16 @@ namespace Bangazon.Controllers
             _context = context;
             _userManager = userManager;
         }
-        // GET: Products
-        public async Task<ActionResult> Index()
+
+
+    // GET: Products
+    public async Task<ActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
             var products = await _context.Product
                 .Where(p => p.UserId == user.Id)
                 .Include(p => p.ProductType)
-                .ToListAsync(); 
+                .ToListAsync();
 
             return View(products);
         }
@@ -51,7 +54,8 @@ namespace Bangazon.Controllers
             viewModel.Title = item.Title;
             viewModel.Price = item.Price;
             viewModel.Description = item.Description;
-            viewModel.Quantity = item.Quantity; 
+            viewModel.Quantity = item.Quantity;
+            viewModel.ImagePath = item.ImagePath;
             
 
             return View(viewModel);
@@ -75,7 +79,7 @@ namespace Bangazon.Controllers
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ProductFormViewModel productViewItem)
+        public async Task<ActionResult> Create([Bind("ProductId,DateCreated,Description,Title,Price,Quantity,UserId,City,ImagePath,Active,ProductTypeId,File")]ProductFormViewModel productViewItem)
         {
             try
             {
@@ -92,17 +96,30 @@ namespace Bangazon.Controllers
                     City = productViewItem.City, 
                     Active = productViewItem.Active, 
                     ProductTypeId = productViewItem.ProductTypeId, 
-                    localDelivery = productViewItem.localDelivery
-
+                    localDelivery = productViewItem.localDelivery,
                     
                 };
+                if (productViewItem.File != null && productViewItem.File.Length > 0)
+                {
+                    //creates the file name
+                    var fileName = Guid.NewGuid().ToString() + Path.GetFileName(productViewItem.File.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+
+                    product.ImagePath = fileName;
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await productViewItem.File.CopyToAsync(stream);
+                    }
+
+                }
 
                 _context.Product.Add(product);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }

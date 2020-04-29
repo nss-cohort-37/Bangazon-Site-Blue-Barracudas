@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +13,8 @@ namespace Bangazon.Models.ProductViewModels
     public class ProductFormViewModel
     {
         public int ProductId { get; set; }
+
+       
 
         [Required]
         [DataType(DataType.Date)]
@@ -44,7 +47,10 @@ namespace Bangazon.Models.ProductViewModels
 
         public string City { get; set; }
 
+        [Display(Name = " ")]
         public string ImagePath { get; set; }
+
+        public IFormFile File { get; set; }
 
         public bool Active { get; set; }
 

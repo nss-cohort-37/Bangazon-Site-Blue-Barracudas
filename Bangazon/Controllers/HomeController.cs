@@ -23,26 +23,32 @@ namespace Bangazon.Controllers
             _context = context;
             _userManager = userManager;
         }
-        public async Task<ActionResult> Index(string searchBar)
+        public async Task<ActionResult> Index()
         {
 
+            return View();
+           
+        }
+
+        public async Task<ActionResult> Search(string searchBar)
+        {
 
             if (searchBar != null)
             {
                 var products = await _context.Product
-                      .Where(p => p.Title.Contains(searchBar) && p.Active == true || p.City.Contains(searchBar) && p.Active == true || p.Description.Contains(searchBar) && p.Active == true)
-                      .Include(p => p.ProductType)
-                      //.Include(p => p.ImagePath)
-                       .ToListAsync();
+                .Where(p =>
+                 p.Title.Contains(searchBar) && p.Active == true ||
+                 p.City.Contains(searchBar) && p.Active == true ||
+                 p.Description.Contains(searchBar) && p.Active == true ||
+                 p.ProductType.Label.Contains(searchBar) && p.Active == true)
+                 .Include(p => p.ProductType)
+                 .ToListAsync();
+
                 return View(products);
             }
-        
-                return View();
-           
+
+            return View();
         }
-
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
