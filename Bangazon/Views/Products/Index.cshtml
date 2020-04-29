@@ -54,9 +54,11 @@
             else
             {
                 <td>
-                    <img src="~/images/@item.ImagePath" style="width: 4em; height: auto;" />
+                    @Html.DisplayNameFor(modelItem => item.ImagePath)
+                    <a href="@Url.Action("Details", "Products",  new { Id = item.ProductId })">
+                        <img src="~/images/@item.ImagePath" , style="width: 4em; height: auto;">
+                    </a>
                 </td>
-
             }
             <td>
                 @Html.DisplayFor(modelItem => item.DateCreated)

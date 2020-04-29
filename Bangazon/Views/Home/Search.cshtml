@@ -36,38 +36,39 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                @if (item.ImagePath == null)
-                {
-
+        <tr>
+            @if (item.ImagePath == null)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImagePath)
+                </td>
+            }
+            else
+            {
+                <td>
                     @Html.DisplayNameFor(modelItem => item.ImagePath)
-                }
-                else
-                {
-                    <td>
-                        @Html.DisplayNameFor(modelItem => item.ImagePath)
-                        <a href="@Url.Action("Details", "Products",  new { Id = item.ProductId })">
-                            <img src="~/images/@item.ImagePath" , style="width: 4em; height: auto;">
-                        </a>
-                    </td>
-                }
+                    <a href="@Url.Action("Details", "Products",  new { Id = item.ProductId })">
+                        <img src="~/images/@item.ImagePath" , style="width: 4em; height: auto;">
+                    </a>
+                </td>
+            }
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.City)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductType.Label)
-                </td>
-            </tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductType.Label)
+            </td>
+        </tr>
         }
     </tbody>
 </table>
