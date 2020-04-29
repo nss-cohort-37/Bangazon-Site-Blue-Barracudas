@@ -27,6 +27,7 @@ namespace Bangazon.Models.ProductViewModels
         [Required]
         public int Quantity { get; set; }
 
+        [Display(Name = " ")]
         public string ImagePath { get; set; }
 
 

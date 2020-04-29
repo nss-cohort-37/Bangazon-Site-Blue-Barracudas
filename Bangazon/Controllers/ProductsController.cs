@@ -29,14 +29,16 @@ namespace Bangazon.Controllers
             _context = context;
             _userManager = userManager;
         }
-        // GET: Products
-        public async Task<ActionResult> Index()
+
+
+    // GET: Products
+    public async Task<ActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
             var products = await _context.Product
                 .Where(p => p.UserId == user.Id)
                 .Include(p => p.ProductType)
-                .ToListAsync(); 
+                .ToListAsync();
 
             return View(products);
         }

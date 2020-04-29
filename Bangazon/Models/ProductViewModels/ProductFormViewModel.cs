@@ -14,8 +14,7 @@ namespace Bangazon.Models.ProductViewModels
     {
         public int ProductId { get; set; }
 
-        
-        public IFormFile File { get; set; }
+       
 
         [Required]
         [DataType(DataType.Date)]
@@ -48,7 +47,10 @@ namespace Bangazon.Models.ProductViewModels
 
         public string City { get; set; }
 
+        [Display(Name = " ")]
         public string ImagePath { get; set; }
+
+        public IFormFile File { get; set; }
 
         public bool Active { get; set; }
 

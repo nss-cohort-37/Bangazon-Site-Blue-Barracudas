@@ -1,88 +1,14 @@
 ﻿@model IEnumerable<Bangazon.Models.Product>
 
+
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Bangazon, Inc.</h1>
 
-
-@if (Model == null)
-{
     <div class="text-center">
         <h1 class="display-4">welcome</h1>
         <p>learn about <a href="https://docs.microsoft.com/aspnet/core">building web apps with asp.net core</a>.</p>
     </div>
-
-}
-else
-{
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.City)
-                </th>
-                <th>
-                    Image
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductTypeId)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-
-
-        @foreach (var item in Model)
-        {
-
-          
-                <tbody>
-
-                    <tr>
-                        <td>
-                            @Html.ActionLink(item.Title, "Details", "Products", new { id = item.ProductId }, new { @class = "btn btn-link" })
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.City)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ImagePath)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProductType.Label)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }, new { @class = "btn btn-link" }) |
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            
-
-        }
-    </table> 
-        }
-
-
 

@@ -37,10 +37,10 @@ namespace Bangazon.Controllers
                 .Where(op => op.Order.UserId == user.Id && op.Order.PaymentTypeId == null)
                 .Include(op => op.Product).ToListAsync();
 
-                //.Include(op => op.Order.OrderProducts ).ToListAsync(); 
-
+            //.Include(op => op.Order.OrderProducts ).ToListAsync(); 
             // maybe a make a view model 
-            
+
+
             return View(shoppingCartItems);
         }
 

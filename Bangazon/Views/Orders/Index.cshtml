@@ -1,8 +1,11 @@
 ﻿@model IEnumerable<Bangazon.Models.OrderProduct>
 
+
+
 @{
     ViewData["Title"] = "Index";
 }
+
 
 <h1>Shopping Cart</h1>
 
@@ -46,8 +49,8 @@
                     @Html.ActionLink("Delete", "Delete", new { id = item.OrderProductId })
                 </td>
             </tr>
-            <a type="button" asp-controller="Orders" asp-action="Edit" asp-route-id="@item.OrderId"  > Complete Order </a>
-            <a type="button" asp-controller="Orders" asp-action="CancelOrder" asp-route-id="@item.OrderId" > Cancel Order </a>
+            <a type="button" asp-controller="Orders" asp-action="Edit" asp-route-id="@item.OrderId"> Complete Order </a>
+            <a type="button" asp-controller="Orders" asp-action="CancelOrder" asp-route-id="@item.OrderId"> Cancel Order </a>
         }
     </tbody>
 </table>
