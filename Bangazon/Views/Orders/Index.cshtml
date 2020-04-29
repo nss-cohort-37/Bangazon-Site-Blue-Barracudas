@@ -1,11 +1,13 @@
-﻿@model IEnumerable<Bangazon.Models.OrderProduct>
+﻿@model Bangazon.Models.OrderViewModels.ShoppingCartViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
-
+                       
 <h1>Shopping Cart</h1>
 
+    @if (Model.OrderId> 0)
+    {
 <table class="table">
     <thead>
         <tr>
@@ -20,7 +22,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+
+
+        @foreach (var item in Model.Products)
         {
 
             <tr>
@@ -46,10 +50,19 @@
                     @Html.ActionLink("Delete", "Delete", new { id = item.OrderProductId })
                 </td>
             </tr>
-            <a type="button" asp-controller="Orders" asp-action="Edit" asp-route-id="@item.OrderId"  > Complete Order </a>
-            <a type="button" asp-controller="Orders" asp-action="CancelOrder" asp-route-id="@item.OrderId" > Cancel Order </a>
         }
+        @Html.ActionLink("Complete Order", "Edit", new { id = Model.OrderId })
+        @Html.ActionLink("Cancel Order", "CancelOrder", new { id = Model.OrderId })
+
+        
     </tbody>
 </table>
+    }
+    else
+    {
+        <tbody>
+            <h6>Your shopping cart is empty.</h6>
+        </tbody>
+    }
 
 
