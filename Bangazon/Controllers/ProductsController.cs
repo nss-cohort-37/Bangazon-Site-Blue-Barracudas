@@ -94,8 +94,7 @@ namespace Bangazon.Controllers
                     City = productViewItem.City, 
                     Active = productViewItem.Active, 
                     ProductTypeId = productViewItem.ProductTypeId, 
-                    localDelivery = productViewItem.localDelivery
-
+                    localDelivery = productViewItem.localDelivery,
                     
                 };
                 if (productViewItem.File != null && productViewItem.File.Length > 0)
@@ -118,7 +117,7 @@ namespace Bangazon.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
