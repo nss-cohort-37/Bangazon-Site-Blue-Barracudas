@@ -14,7 +14,7 @@ namespace Bangazon.Models.ProductViewModels
     {
         public int ProductId { get; set; }
 
-        [MaxLength(4097152, ErrorMessage = "File too large")]
+        
         public IFormFile File { get; set; }
 
         [Required]
