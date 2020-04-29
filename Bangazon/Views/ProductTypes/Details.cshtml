@@ -1,0 +1,33 @@
+﻿@model Bangazon.Models.ProductTypeViewModels.AllCategoryProductsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>All @Html.DisplayFor(model => model.Label)</h1>
+
+<div>
+        <table class="table">
+        <thead>
+        <tr class="row">
+            <th class="col-lg-4">Title</th>
+            <th class="col-lg-4">Quantity</th>
+            <th class="col-lg-4">Price</th>
+        </tr>
+         </thead>
+        <tbody>
+        @foreach(var item in Model.Products)
+        {
+            <tr class="row">
+                   <td class="col-sm-4"> @Html.DisplayFor(modelItem => item.Title)</td>
+                   <td class="col-sm-4">@Html.DisplayFor(modelItem => item.Quantity)</td>
+                   <td class="col-sm-4">@Html.DisplayFor(modelItem => item.Price)</td>
+               
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

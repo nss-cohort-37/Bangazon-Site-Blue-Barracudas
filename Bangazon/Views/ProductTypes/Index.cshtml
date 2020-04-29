@@ -22,16 +22,16 @@
 @foreach (var item in Model.Types) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TypeName)
-                <ul>
-                    @foreach (var product in item.Products)
-                    {
-                    <li>
-                        <a asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId">@Html.DisplayFor(modelItem => product.Title)</a>
-                    </li>
-                    }
-                </ul>
-            </td>
+                <a asp-controller="ProductTypes" asp-action="Details" asp-route-id="@item.TypeId">@Html.DisplayFor(modelItem => item.TypeName)</a>
+                    <ul>
+                        @foreach (var product in item.Products)
+                        {
+                            <li>
+                                <a asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId">@Html.DisplayFor(modelItem => product.Title)</a>
+                            </li>
+                        }
+                    </ul>
+</td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductCount)
             </td>
