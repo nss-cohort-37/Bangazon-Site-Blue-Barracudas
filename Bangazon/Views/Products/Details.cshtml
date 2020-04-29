@@ -9,12 +9,19 @@
 <div>
     <hr />
     <dl class="row">
+        @if (Model.ImagePath == null )
+        {
+
+        }else
+        {
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImagePath)
         </dt>
         <dd class="col-sm-10">
             <img src="~/images/@Model.ImagePath" />
         </dd>
+
+        }
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
