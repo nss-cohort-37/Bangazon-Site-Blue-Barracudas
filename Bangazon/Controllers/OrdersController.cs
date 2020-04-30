@@ -59,11 +59,31 @@ namespace Bangazon.Controllers
             return View(viewModel);
 
         }
-
         // GET: Orders/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var user = await GetCurrentUserAsync();
+
+            var order = await _context.OrderProduct
+                .Where(o => o.Order.UserId == user.Id)
+                .Where(op => op.OrderId == id)
+                .Include(o => o.Order)
+                .Include(p => p.Product)
+                .Include(op => op.Order.OrderProducts)
+                .ToListAsync();
+
+            var orderId = await _context.Order.FirstOrDefaultAsync(o => o.UserId == user.Id && o.PaymentTypeId != null);
+
+      
+                var viewModel = new ShoppingCartViewModel()
+                {
+                    OrderId = orderId.OrderId,
+                    Products = order
+                };
+
+
+
+            return View(viewModel);
         }
 
         // GET: Orders/Create
@@ -205,6 +225,22 @@ namespace Bangazon.Controllers
             }
         }
 
+        public async Task<ActionResult> ViewOrder(int id)
+        {
+            var user = await GetCurrentUserAsync();
+
+            var viewModel = new ViewOrderViewModel();
+
+            var order = await _context.Order
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                 .FirstOrDefaultAsync(o => o.OrderId == id);
+
+            viewModel.Order = order;
+
+
+            return View(viewModel);
+        }
 
         // delete for the entire order and all it's corresponding products 
 

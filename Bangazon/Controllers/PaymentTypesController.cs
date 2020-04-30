@@ -42,6 +42,7 @@ namespace Bangazon.Controllers
 
         }
 
+
         // GET: PaymentTypes/Create
         public async Task<ActionResult> Create()
         {
@@ -70,6 +71,25 @@ namespace Bangazon.Controllers
                 return View();
             }
         }
+
+        public async Task<ActionResult> Details(int id)
+        {
+            var paymentTypes = await _context.PaymentType.FirstOrDefaultAsync(pt => pt.PaymentTypeId == id);
+            var ordersList = await _context.Order.Where(p => p.PaymentTypeId == id).Include(p => p.OrderProducts).ToListAsync();
+
+      
+
+            var viewModel = new PaymentType()
+            {
+                AccountNumber = paymentTypes.AccountNumber,
+                Description = paymentTypes.Description,
+                DateCreated = paymentTypes.DateCreated,
+                Orders = ordersList,
+               
+
+            };
+            return View(viewModel);
+        }
         public async Task<ActionResult> Delete(int id)
         {
             var paymentType = await _context.PaymentType.FirstOrDefaultAsync(pt => pt.PaymentTypeId == id);
@@ -82,6 +102,8 @@ namespace Bangazon.Controllers
             }
 
             return View(paymentType);
+
+
         }
 
         // POST: PaymentTypes/Delete/5
@@ -95,7 +117,7 @@ namespace Bangazon.Controllers
                 _context.PaymentType.Remove(paymentType);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Profile", new { id = paymentType.PaymentTypeId });
             }
             catch (Exception ex)
             {

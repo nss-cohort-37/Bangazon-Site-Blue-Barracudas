@@ -1,0 +1,134 @@
+﻿@model Bangazon.Models.ProfileViewModels.ProfileDetailsViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="color:goldenrod">Profile Information</h1>
+
+            <td>
+                @Html.ActionLink("Edit Account Information", "Edit", new { id = Model.UserId })
+
+            </td>
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.User.FirstName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.User.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.StreetAddress)
+            </th>
+          
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+        
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.User.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.User.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.User.StreetAddress)
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Orders)
+            </th>
+        </tr>
+    </thead>
+
+
+    @foreach (var item in Model.Orders)
+    {
+        <tbody>
+            <tr>
+                <td>
+                    <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.OrderId">
+                        @Html.ActionLink(item.DateCompleted.ToString(), // <-- Link text
+                        "ViewOrder", // <-- Action Method Name
+                        "Orders", // <-- Controller Name
+                        new { Id = item.PaymentTypeId }, // <-- Route value
+                        null // <-- htmlArguments
+                        )
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    }
+
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentTypes)
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model.PaymentTypes)
+    {
+        <tbody>
+            <tr>
+                <td>
+                    <a asp-controller="PaymentTypes" asp-action="Details" asp-route-id="@item.PaymentTypeId">
+                        @Html.ActionLink(item.Description, // <-- Link text
+                        "Details", // <-- Action Method Name
+                        "PaymentTypes", // <-- Controller Name
+                        new { Id = item.PaymentTypeId }, // <-- Route value
+                        null // <-- htmlArguments
+                        )
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    }
+</table>
+
+<table class="table" >
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Products)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.Products)
+    {
+        <tbody>
+            <tr>
+                <td>
+                    <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">
+                        @Html.ActionLink(item.Title, // <-- Link text
+                        "Details", // <-- Action Method Name
+                        "Products", // <-- Controller Name
+                        new { Id = item.ProductId }, // <-- Route value
+                        null // <-- htmlArguments
+                        )
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    }
+
+</table>
