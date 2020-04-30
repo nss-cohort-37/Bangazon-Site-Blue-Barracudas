@@ -1,0 +1,50 @@
+﻿@model Bangazon.Models.OrderViewModels.ShoppingCartViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Order Details</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Products
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var item in Model.Products)
+        {
+
+            <tr>
+                <td>
+
+
+                    <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">
+                        @Html.DisplayFor(modelItem => item.Product.Title)
+                    </a>
+                    <p>
+
+                        @Html.DisplayFor(modelItem => item.Product.Price)
+                    </p>
+                    @Html.DisplayFor(modelItem => item.Product.Description)
+
+                    <form asp-controller="Orders" asp-route-id="@item.Product.ProductId" asp-action="Create">
+                        <input type="submit" class=" btn btn-light" value="Re-Order Item" />
+                    </form>
+
+
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+

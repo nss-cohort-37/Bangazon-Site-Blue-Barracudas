@@ -42,6 +42,7 @@ namespace Bangazon.Controllers
 
         }
 
+
         // GET: PaymentTypes/Create
         public async Task<ActionResult> Create()
         {
@@ -74,7 +75,9 @@ namespace Bangazon.Controllers
         public async Task<ActionResult> Details(int id)
         {
             var paymentTypes = await _context.PaymentType.FirstOrDefaultAsync(pt => pt.PaymentTypeId == id);
-            var ordersList = await _context.Order.Where(p => p.PaymentTypeId == id).ToListAsync();
+            var ordersList = await _context.Order.Where(p => p.PaymentTypeId == id).Include(p => p.OrderProducts).ToListAsync();
+
+      
 
             var viewModel = new PaymentType()
             {

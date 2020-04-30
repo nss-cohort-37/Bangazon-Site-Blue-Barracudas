@@ -4,39 +4,59 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+
+<h1>@Html.DisplayFor(model => model.Description)</h1>
 
 <div>
-    <h4>PaymentType</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DateCreated)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateCreated)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AccountNumber)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.AccountNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.PaymentTypeId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            @if (Model.Orders == null)
+            {
+
+            }
+            else
+            {
+
+            <h5>Order History</h5>
+            }
+
+        </tr>
+    </thead>
+
+        @foreach (var item in Model.Orders)
+        {
+   
+            <tbody>
+                <tr class="col-sm-2">
+                    @Html.ActionLink(item.DateCompleted.ToString(), // <-- Link text
+                           "Details", // <-- Action Method Name
+                           "Orders", // <-- Controller Name
+                           new { id = item.OrderId }, // <-- Route value
+                           null // <-- htmlArguments
+                           )
+                </tr>
+            </tbody>
+   
+        }
+    </table>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>

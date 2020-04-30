@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Bangazon.Data;
 using Bangazon.Models;
-using Bangazon.Models.OrderViewModels;
+using Bangazon.Models.ProfileViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -33,14 +34,33 @@ namespace Bangazon.Controllers
         // GET: Profile
         public async Task<ActionResult> Index()
         {
-             var user = await GetCurrentUserAsync();
-            var userInfo = await _context.ApplicationUsers
-             .ToListAsync();
+            var user = await GetCurrentUserAsync();
 
-            return View(userInfo);
+            var userInfo = await _context.ApplicationUsers
+                .Where(o => o.Id == user.Id)
+                .Include(o => o.Orders)
+                .Include(p => p.Products)
+                .Include(pt => pt.PaymentTypes)
+                .ToListAsync();
+
+            var userId = await _context.ApplicationUsers.FirstOrDefaultAsync(o => o.Id == user.Id);
+
+            var viewModel = new ProfileDetailsViewModel()
+            {
+                User = user, 
+                ImagePath = userId.ImagePath,
+                UserId = userId.Id,
+                Products = userId.Products.ToList(),
+                Orders = userId.Orders.ToList(),
+                PaymentTypes = userId.PaymentTypes.ToList(),
+
+        };
+
+
+
+            return View(viewModel);
 
         }
-
         // GET: Profile/Details/5
         public ActionResult Details(int id)
         {
@@ -70,20 +90,53 @@ namespace Bangazon.Controllers
             }
         }
 
-        // GET: Profile/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var user = await GetCurrentUserAsync();
+            var viewModel = new ProfileFormViewModel
+            {
+                UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                StreetAddress = user.StreetAddress
+            };
+            return View(viewModel);
         }
 
-        // POST: Profile/Edit/5
+        // POST: Profiles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, [Bind("UserId,FirstName,LastName,StreetAddress,ImagePath,File")] ProfileFormViewModel profile)
         {
             try
             {
-                // TODO: Add update logic here
+                var profileData = await GetCurrentUserAsync();
+
+                profileData.FirstName = profile.FirstName;
+                profileData.LastName = profile.LastName;
+                profileData.StreetAddress = profile.StreetAddress;
+                profileData.ImagePath = profile.ImagePath;
+
+                if (profile.File != null && profile.File.Length > 0)
+                {
+                    //creates the file name
+                    var fileName = Guid.NewGuid().ToString() + Path.GetFileName(profile.File.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+
+
+                    profileData.ImagePath = fileName;
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                               
+                        await profile.File.CopyToAsync(stream);
+                    }
+
+                }
+
+                _context.ApplicationUsers.Update(profileData);
+              
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }

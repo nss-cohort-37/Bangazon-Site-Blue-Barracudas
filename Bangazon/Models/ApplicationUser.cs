@@ -29,7 +29,11 @@ namespace Bangazon.Models
         public string LastName { get; set; }
 
         [Required]
+        [Display(Name = "Address")]
         public string StreetAddress { get; set; }
+
+        [Display(Name = " ")]
+        public string ImagePath { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
 

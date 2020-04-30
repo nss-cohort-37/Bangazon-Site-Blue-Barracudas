@@ -42,6 +42,9 @@ namespace Bangazon.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -100,7 +103,7 @@ namespace Bangazon.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b1f4f009-a260-4abe-959a-0eb259690857",
+                            ConcurrencyStamp = "c2847a90-145e-4eed-8ad5-eedebdaec768",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admina",
@@ -108,7 +111,7 @@ namespace Bangazon.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIIeTvvRF7Z3UZOaewTr9jMUhTPZhNac/bjyu/2roBeg7u723F9nfuowCh+NT0rgiw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBzTRJf4+3fQG2BOxamMDIk4zn4Vn1vlS8uL740ZZpkx98Q0ZcdnT2mt8IB+GVlc2g==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             StreetAddress = "123 Infinity Way",

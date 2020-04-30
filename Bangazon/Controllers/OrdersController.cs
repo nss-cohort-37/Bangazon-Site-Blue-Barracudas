@@ -61,9 +61,30 @@ namespace Bangazon.Controllers
         }
 
         // GET: Orders/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var user = await GetCurrentUserAsync();
+
+            var order = await _context.OrderProduct
+                .Where(o => o.Order.UserId == user.Id)
+                .Where(op => op.OrderId == id)
+                .Include(o => o.Order)
+                .Include(p => p.Product)
+                .Include(op => op.Order.OrderProducts)
+                .ToListAsync();
+
+            var orderId = await _context.Order.FirstOrDefaultAsync(o => o.UserId == user.Id && o.PaymentTypeId != null);
+
+      
+                var viewModel = new ShoppingCartViewModel()
+                {
+                    OrderId = orderId.OrderId,
+                    Products = order
+                };
+
+
+
+            return View(viewModel);
         }
 
         // GET: Orders/Create
