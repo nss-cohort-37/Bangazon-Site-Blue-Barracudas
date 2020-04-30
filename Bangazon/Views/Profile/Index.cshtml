@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Bangazon.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Profile Information</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StreetAddress)
+            </th>
+
+
+
+
+
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StreetAddress)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<table>
+
+    <tbody>
+        <tr>
+            <td>
+                @foreach (var item in Model)
+                {
+                    @Html.ActionLink("Products", // <-- Link text
+                  "Index", // <-- Action Method Name
+                  "Products", // <-- Controller Name
+                  null, // <-- Route value
+                  null // <-- htmlArguments
+                  )
+                }
+            </td>
+        </tr>
+    </tbody>
+
+
+</table>
+
+<table>
+
+    <tbody>
+        <tr>
+            <td>
+                @foreach (var item in Model)
+                {
+                    @Html.ActionLink("Orders", // <-- Link text
+                  "Index", // <-- Action Method Name
+                  "Orders", // <-- Controller Name
+                  null, // <-- Route value
+                  null // <-- htmlArguments
+                  )
+                }
+            </td>
+        </tr>
+    </tbody>
+
+
+</table>
+
+
+
+<table>
+
+    <tbody>
+        <tr>
+            <td>
+                @foreach (var item in Model)
+                {
+                    @Html.ActionLink("Payment Types", // <-- Link text
+                  "Index", // <-- Action Method Name
+                  "PaymentTypes", // <-- Controller Name
+                  null, // <-- Route value
+                  null // <-- htmlArguments
+                  )
+                }
+            </td>
+        </tr>
+    </tbody>
+
+
+</table>

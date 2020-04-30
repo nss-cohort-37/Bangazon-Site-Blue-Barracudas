@@ -70,6 +70,23 @@ namespace Bangazon.Controllers
                 return View();
             }
         }
+
+        public async Task<ActionResult> Details(int id)
+        {
+            var paymentTypes = await _context.PaymentType.FirstOrDefaultAsync(pt => pt.PaymentTypeId == id);
+            var ordersList = await _context.Order.Where(p => p.PaymentTypeId == id).ToListAsync();
+
+            var viewModel = new PaymentType()
+            {
+                AccountNumber = paymentTypes.AccountNumber,
+                Description = paymentTypes.Description,
+                DateCreated = paymentTypes.DateCreated,
+                Orders = ordersList,
+               
+
+            };
+            return View(viewModel);
+        }
         public async Task<ActionResult> Delete(int id)
         {
             var paymentType = await _context.PaymentType.FirstOrDefaultAsync(pt => pt.PaymentTypeId == id);
