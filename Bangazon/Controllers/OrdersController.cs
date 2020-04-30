@@ -59,7 +59,6 @@ namespace Bangazon.Controllers
             return View(viewModel);
 
         }
-
         // GET: Orders/Details/5
         public async Task<ActionResult> Details(int id)
         {
@@ -226,6 +225,22 @@ namespace Bangazon.Controllers
             }
         }
 
+        public async Task<ActionResult> ViewOrder(int id)
+        {
+            var user = await GetCurrentUserAsync();
+
+            var viewModel = new ViewOrderViewModel();
+
+            var order = await _context.Order
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                 .FirstOrDefaultAsync(o => o.OrderId == id);
+
+            viewModel.Order = order;
+
+
+            return View(viewModel);
+        }
 
         // delete for the entire order and all it's corresponding products 
 

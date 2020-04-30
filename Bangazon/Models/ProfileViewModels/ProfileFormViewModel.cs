@@ -25,10 +25,6 @@ namespace Bangazon.Models.ProfileViewModels
         [Display(Name = "Address")]
         public string StreetAddress { get; set; }
 
-        [Display(Name = " ")]
-        public string ImagePath { get; set; }
-
-        public IFormFile File { get; set; }
-
+  
     }
 }

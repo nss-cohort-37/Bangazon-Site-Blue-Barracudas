@@ -102,6 +102,8 @@ namespace Bangazon.Controllers
             }
 
             return View(paymentType);
+
+
         }
 
         // POST: PaymentTypes/Delete/5
@@ -115,7 +117,7 @@ namespace Bangazon.Controllers
                 _context.PaymentType.Remove(paymentType);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Profile", new { id = paymentType.PaymentTypeId });
             }
             catch (Exception ex)
             {

@@ -32,8 +32,6 @@ namespace Bangazon.Models
         [Display(Name = "Address")]
         public string StreetAddress { get; set; }
 
-        [Display(Name = " ")]
-        public string ImagePath { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
 

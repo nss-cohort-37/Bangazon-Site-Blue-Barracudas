@@ -48,7 +48,6 @@ namespace Bangazon.Controllers
             var viewModel = new ProfileDetailsViewModel()
             {
                 User = user, 
-                ImagePath = userId.ImagePath,
                 UserId = userId.Id,
                 Products = userId.Products.ToList(),
                 Orders = userId.Orders.ToList(),
@@ -106,7 +105,7 @@ namespace Bangazon.Controllers
         // POST: Profiles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, [Bind("UserId,FirstName,LastName,StreetAddress,ImagePath,File")] ProfileFormViewModel profile)
+        public async Task<ActionResult> Edit(int id, ProfileFormViewModel profile)
         {
             try
             {
@@ -115,24 +114,9 @@ namespace Bangazon.Controllers
                 profileData.FirstName = profile.FirstName;
                 profileData.LastName = profile.LastName;
                 profileData.StreetAddress = profile.StreetAddress;
-                profileData.ImagePath = profile.ImagePath;
-
-                if (profile.File != null && profile.File.Length > 0)
-                {
-                    //creates the file name
-                    var fileName = Guid.NewGuid().ToString() + Path.GetFileName(profile.File.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
 
 
-                    profileData.ImagePath = fileName;
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                               
-                        await profile.File.CopyToAsync(stream);
-                    }
-
-                }
+          
 
                 _context.ApplicationUsers.Update(profileData);
               

@@ -8,17 +8,12 @@
 
 @if (Model.OrderId > 0)
 {
+            @Html.ActionLink("Complete Order", "Edit", new { id = Model.OrderId })
     <table class="table">
         <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.OrderId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Order.DateCreated)
-                </th>
-
-                <th></th>
+      
+                <th>Cart Summary</th>
             </tr>
         </thead>
         <tbody>
@@ -36,13 +31,13 @@
                                 <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">
                                     @Html.DisplayFor(modelItem => item.Product.Title)
                                 </a>
-                                @Html.DisplayFor(modelItem => item.Product.Price)
+               
                             </li>
 
                         </ul>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Order.DateCreated)
+                                @Html.DisplayFor(modelItem => item.Product.Price)
                     </td>
 
                     <td>
@@ -51,12 +46,11 @@
                     </td>
                 </tr>
             }
-            @Html.ActionLink("Complete Order", "Edit", new { id = Model.OrderId })
-            @Html.ActionLink("Cancel Order", "CancelOrder", new { id = Model.OrderId })
 
 
         </tbody>
     </table>
+            @Html.ActionLink("Cancel Order", "CancelOrder", new { id = Model.OrderId })
 }
 else
 {
@@ -64,4 +58,3 @@ else
         <h6>Your shopping cart is empty.</h6>
     </tbody>
 }
-

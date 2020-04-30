@@ -20,9 +20,6 @@ namespace Bangazon.Models.ProfileViewModels
         [Display(Name = "Products")]
         public List<Product> Products { get; set; }
 
-        [Display(Name = " ")]
-        public string ImagePath { get; set; }
-
 
     }
 }

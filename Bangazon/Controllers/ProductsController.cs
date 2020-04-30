@@ -162,7 +162,7 @@ namespace Bangazon.Controllers
         {
             try
             {
-                product.ProductId = id; 
+                product.ProductId = id;
                 _context.Product.Remove(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -5,7 +5,7 @@
 }
 
 
-<h1>@Html.DisplayFor(model => model.Description)</h1>
+<h1 style="color:goldenrod">@Html.DisplayFor(model => model.Description)</h1>
 
 <div>
     <hr />
@@ -34,29 +34,34 @@
             else
             {
 
-            <h5>Order History</h5>
+                <h5>Order History</h5>
             }
 
         </tr>
     </thead>
 
-        @foreach (var item in Model.Orders)
-        {
-   
-            <tbody>
-                <tr class="col-sm-2">
-                    @Html.ActionLink(item.DateCompleted.ToString(), // <-- Link text
-                           "Details", // <-- Action Method Name
-                           "Orders", // <-- Controller Name
-                           new { id = item.OrderId }, // <-- Route value
-                           null // <-- htmlArguments
-                           )
-                </tr>
-            </tbody>
-   
-        }
-    </table>
+    @foreach (var item in Model.Orders)
+    {
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
+        <tbody>
+            <tr class="col-sm-2">
+                <td>
+
+                @Html.ActionLink(item.DateCompleted.ToString(), // <-- Link text
+                       "ViewOrder", // <-- Action Method Name
+                       "Orders", // <-- Controller Name
+                       new { id = item.OrderId }, // <-- Route value
+                       null // <-- htmlArguments
+                       )
+                </td>
+            </tr>
+        </tbody>
+
+    }
+</table>
+
+
+<div>
+@Html.ActionLink("Delete", "Delete", new { id = Model.PaymentTypeId }) |
+    <a asp-action="Index">Back to List</a>
+</div>

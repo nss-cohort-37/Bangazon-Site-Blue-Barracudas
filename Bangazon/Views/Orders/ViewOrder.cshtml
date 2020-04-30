@@ -1,0 +1,58 @@
+﻿@model Bangazon.Models.OrderViewModels.ViewOrderViewModel
+
+@{
+    ViewData["Title"] = "ViewOrder";
+}
+
+<h1>Order Details</h1>
+
+<div>
+
+    <hr />
+    <table class="table">
+        <thead> 
+            <tr>
+                <th>
+                    Products
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Order.OrderProducts)
+            {
+            <tr>
+                <td>
+
+                <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">
+                    @Html.DisplayFor(modelItem => item.Product.Title)
+                </a>
+                <p>
+
+                    @Html.DisplayFor(modelItem => item.Product.Price)
+                </p>
+                @Html.DisplayFor(modelItem => item.Product.Description)
+
+                <form asp-controller="Orders" asp-route-id="@item.Product.ProductId" asp-action="Create">
+                    <input type="submit" class=" btn btn-light" value="Re-Order Item" />
+                </form>
+
+                </td>
+
+            </tr>
+            }
+            <tr>
+                <td>
+                    Total Price
+                </td>
+                <td>
+                    $@Model.TotalPrice
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
